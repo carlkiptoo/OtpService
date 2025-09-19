@@ -38,7 +38,7 @@ export class OtpGenerator {
     }
 
     generate(): GeneratedOtp {
-        const code = this.charset === 'digits' ? this.generateNumeric() : this.generateAlphanumeric();
+        const code = this.charset === 'digits' ? this.generateNumeric() : this.generateAlphaNumeric();
 
         const hash = this.hashOtp(code);
         const expiresAt = new Date(Date.now() + this.expiryMinutes * 60 * 1000);
@@ -111,6 +111,19 @@ export class OtpGenerator {
 
     }
 
-    
+    private generateAlphaNumeric(): string {
+        const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+        const charLen = chars.length;
+        const bytes = crypto.randomBytes(this.length);
+
+        let out = '';
+        for (let i = 0; i < this.length; i++) {
+            const idx = bytes[i] % charLen;
+            out += chars[idx];
+        }
+        return out;
+    }
+
 
 }
