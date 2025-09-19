@@ -88,5 +88,29 @@ export class OtpGenerator {
         }
     }
 
+    private generateNumeric(): string {
+        const max = BigInt(10) ** BigInt(this.length);
+
+        if (this.length <= 9) {
+            const min = this.allowLeadingZeros ? 0 : Math.pow(10, this.length - 1);
+            const maxNum = Math.pow(10, this.length) - 1;
+            const rand = crypto.randomInt(min, maxNum + 1);
+            return rand.toString().padStart(this.length, "0");
+        }
+
+        const neededBytes = Math.ceil(Number(this.length * Math.log2(10)) / 8);
+        const buf = crypto.randomBytes(neededBytes + 2);
+        const num = BigInt('0x' + buf.toString('hex')) % max;
+        let str = num.toString(10);
+
+        if (this.allowLeadingZeros) {
+            while (str.length < this.length) str = '0' + str
+
+        }
+        return str;
+
+    }
+
     
+
 }
