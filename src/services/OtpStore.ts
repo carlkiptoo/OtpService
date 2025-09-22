@@ -17,8 +17,8 @@ export class OtpStore {
         this.generator = new OtpGenerator();
         this.maxAttempts = options?.maxAttempts ?? 3;
 
-        this.client.on('error', () => {
-            console.error('[OtpStore] Redis Client Error');
+        this.client.on('error', (error) => {
+            console.error('[OtpStore] Redis Client Error', error);
         });
     }
 
