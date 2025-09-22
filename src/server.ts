@@ -36,9 +36,9 @@ app.post('/request-otp', asyncHandler(async (req: Request, res: Response) => {
         return res.status(400).json({error: `Invalid channel: ${channel}`});
     }
 
-    if (await otpStore.isBlocked(identifier)) {
-        return res.status(429).json({error: 'Too many requests'});
-    }
+    // if (await otpStore.isBlocked(identifier)) {
+    //     return res.status(429).json({error: 'Too many requests'});
+    // }
 
     const otp = await otpStore.createOtp(identifier);
 
